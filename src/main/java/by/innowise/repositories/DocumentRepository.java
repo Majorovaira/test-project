@@ -16,6 +16,7 @@ public interface DocumentRepository extends CrudRepository<Document, Long> {
 
     Page<Document> findByAuthor(String name, Pageable pageable);
 
+
     Page<Document> findBySubject(String name, Pageable pageable);
 
     Page<Document> findByEndDate(LocalDate date, Pageable pageable);

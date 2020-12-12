@@ -27,9 +27,7 @@ import java.util.Map;
 @RestController
 public class DocumentController {
 
-    private final static String TEMPLATE_NAME = "document";
     private final static String SORT_STRATEGY = "id";
-    private final static String ERROR_MESSAGE_IF_PAGE_EMPTY = "There are not documents in data base for your query";
     private final static String DATE_PATTERN = "yyyy-MM-dd";
     private final static String AUTHOR = "author";
     private final static String SUBJECT = "subject";
