@@ -3,10 +3,7 @@ package by.innowise.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 
@@ -18,13 +15,18 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String author;
+
     private String documentName;
 
     private String description;
 
     private LocalDate createDate;
 
-    private String author;
+
+
+//    @ManyToOne
+//    private Author author;
 
     private String subject;
 

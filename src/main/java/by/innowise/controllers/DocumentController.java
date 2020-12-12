@@ -1,8 +1,9 @@
 package by.innowise.controllers;
 
-import by.innowise.controllers.utils.ControllerUtils;
 import by.innowise.domain.Document;
 import by.innowise.repositories.DocumentRepository;
+import by.innowise.services.interfaces.DocumentService;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,14 +13,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.print.Doc;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
-@Controller()
+@RestController
 public class DocumentController {
 
     private final static String TEMPLATE_NAME = "document";
@@ -37,73 +42,66 @@ public class DocumentController {
 
 
     @Autowired
-    private DocumentRepository documentRepository;
+    private DocumentService documentService;
 
     /**
      * Method apply GET requests and return all documents from repository sorted by id(default)
-     * @param model
      * @param pageable
      * @return page with all documents or error message if documents don't exist
      */
     @GetMapping("/documents")
-    public String getDocuments(Map<String, Object> model,
+    public List<Document> getDocuments(
                                @PageableDefault(sort = {SORT_STRATEGY}, direction = Sort.Direction.ASC) Pageable pageable) {
 
-        Page<Document> documents = documentRepository.findAll(pageable);
-        model = ControllerUtils.createModelForView(model, documents, ERROR_MESSAGE_IF_PAGE_EMPTY);
-
-        return TEMPLATE_NAME;
+        Page<Document> documents = documentService.getAllDocuments(pageable);
+        return documents.getContent();
     }
 
 
     /**
      * Method apply GET-requests and filters documents by text criteria: author or subject
-     * @param model
      * @param filter value equals "author" or "subject"
      * @param criteria author name or subject name
      * @param pageable
      * @return page with all documents or error message if documents don't exist
      */
     @GetMapping("/documents/filter/text")
-    public String getDocumentsByTextCriteria(Map<String, Object> model,
+    public List<Document> getDocumentsByTextCriteria(
                                              @RequestParam String filter,
                                              @RequestParam String criteria,
                                              @PageableDefault(sort = {SORT_STRATEGY}, direction = Sort.Direction.ASC) Pageable pageable) {
         Page<Document> documents = Page.empty();
         if (filter.equals(AUTHOR)) {
-            documents = documentRepository.findByAuthor(criteria, pageable);
+            documents = documentService.getDocumentsByAuthor(criteria, pageable);
         } else if (filter.equals(SUBJECT)) {
-            documents = documentRepository.findBySubject(criteria, pageable);
+            documents = documentService.getDocumentsBySubject(criteria, pageable);
         }
-        model = ControllerUtils.createModelForView(model, documents, ERROR_MESSAGE_IF_PAGE_EMPTY);
-        return TEMPLATE_NAME;
+        return documents.getContent();
 
 
     }
 
     /**
      * Method apply GET-requests and filters documents by date criteria: date of creating document or finishing document
-     * @param model
      * @param filter value equals "create" or "end"
      * @param criteria creating date or finishing date
      * @param pageable
      * @return page with all documents or error message if documents don't exist
      */
     @GetMapping("/documents/filter/date")
-    public String getDocumentsByDateCriteria(Map<String, Object> model,
+    public List<Document> getDocumentsByDateCriteria(
                                              @RequestParam String filter,
                                              @RequestParam @DateTimeFormat(pattern = DATE_PATTERN) Date criteria,
                                              @PageableDefault(sort = {SORT_STRATEGY}, direction = Sort.Direction.ASC) Pageable pageable) {
         LocalDate criteriaLocal = criteria.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         Page<Document> documents = Page.empty();
         if (filter.equals(CREATE)) {
-            documents = documentRepository.findByCreateDate(criteriaLocal, pageable);
+            documents = documentService.getDocumentsByCreateDate(criteriaLocal, pageable);
         } else if (filter.equals(END)) {
-            documents = documentRepository.findByEndDate(criteriaLocal, pageable);
+            documents = documentService.getDocumentsByEndDate(criteriaLocal, pageable);
         }
-        model = ControllerUtils.createModelForView(model, documents, ERROR_MESSAGE_IF_PAGE_EMPTY);
 
-        return TEMPLATE_NAME;
+        return documents.getContent();
     }
 
 
