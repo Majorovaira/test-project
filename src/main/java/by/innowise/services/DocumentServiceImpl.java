@@ -22,8 +22,13 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Page getDocumentsByAuthor(String name, Pageable pageable) {
-        return documentRepository.findByAuthor(name, pageable);
+    public Page getDocumentsByAuthorName(String name, Pageable pageable) {
+        return documentRepository.findByAuthorName(name, pageable);
+    }
+
+    @Override
+    public Page getDocumentsByAuthorId(Long id, Pageable pageable) {
+        return documentRepository.findByAuthorId(id, pageable);
     }
 
     @Override

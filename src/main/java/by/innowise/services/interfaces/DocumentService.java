@@ -9,7 +9,9 @@ public interface DocumentService {
 
     public Page getAllDocuments(Pageable pageable);
 
-    public Page getDocumentsByAuthor(String name, Pageable pageable);
+    public Page getDocumentsByAuthorName(String name, Pageable pageable);
+
+    public Page getDocumentsByAuthorId(Long id, Pageable pageable);
 
     public Page getDocumentsBySubject(String subject, Pageable pageable);
 
