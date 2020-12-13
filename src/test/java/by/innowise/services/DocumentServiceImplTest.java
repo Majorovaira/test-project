@@ -25,6 +25,9 @@ import static org.mockito.BDDMockito.*;
 @MyApplicationAnnotation
 class DocumentServiceImplTest {
 
+    private final String NAME = "Max";
+    private final long ID = 1;
+
     @Autowired
     private DocumentService documentService;
 
@@ -65,11 +68,11 @@ class DocumentServiceImplTest {
     @Test
     void getDocumentsByAuthorName() {
         Document doc = new Document();
-        doc.setAuthor(new Author(1, "Max"));
+        doc.setAuthor(new Author(ID, NAME));
         given(page.getContent()).willReturn(List.of(doc));
-        given(documentRepository.findByAuthorName("Max", pageable)).willReturn(page);
-        Page<Document> document = documentService.getDocumentsByAuthorName("Max", pageable);
-        verify(documentRepository).findByAuthorName(eq("Max"), pageableCaptor.capture());
+        given(documentRepository.findByAuthorName(NAME, pageable)).willReturn(page);
+        Page<Document> document = documentService.getDocumentsByAuthorName(NAME, pageable);
+        verify(documentRepository).findByAuthorName(eq(NAME), pageableCaptor.capture());
         assertEquals(pageableCaptor.getValue(), pageable);
         assertEquals(page.getContent(), document.getContent());
     }
@@ -79,11 +82,11 @@ class DocumentServiceImplTest {
     @Test
     void getDocumentsByAuthorId() {
         Document doc = new Document();
-        doc.setAuthor(new Author(1, "Max"));
+        doc.setAuthor(new Author(ID, NAME));
         given(page.getContent()).willReturn(List.of(doc));
-        given(documentRepository.findByAuthorId((long) 1, pageable)).willReturn(page);
-        Page<Document> document = documentService.getDocumentsByAuthorId((long) 1, pageable);
-        verify(documentRepository).findByAuthorId( eq((long)1), pageableCaptor.capture());
+        given(documentRepository.findByAuthorId(ID, pageable)).willReturn(page);
+        Page<Document> document = documentService.getDocumentsByAuthorId(ID, pageable);
+        verify(documentRepository).findByAuthorId( eq(ID), pageableCaptor.capture());
         assertEquals(pageableCaptor.getValue(), pageable);
         assertEquals(page.getContent(), document.getContent());
     }
@@ -94,11 +97,11 @@ class DocumentServiceImplTest {
     @Test
     void getDocumentsBySubject() {
         Document doc = new Document();
-        doc.setSubject("Max");
+        doc.setSubject(NAME);
         given(page.getContent()).willReturn(List.of(doc));
-        given(documentRepository.findBySubject("Max", pageable)).willReturn(page);
-        Page<Document> document = documentService.getDocumentsBySubject("Max", pageable);
-        verify(documentRepository).findBySubject(eq("Max"), pageableCaptor.capture());
+        given(documentRepository.findBySubject(NAME, pageable)).willReturn(page);
+        Page<Document> document = documentService.getDocumentsBySubject(NAME, pageable);
+        verify(documentRepository).findBySubject(eq(NAME), pageableCaptor.capture());
         assertEquals(pageableCaptor.getValue(), pageable);
         assertEquals(page.getContent(), document.getContent());
     }
