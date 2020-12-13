@@ -1,12 +1,14 @@
 package by.innowise.domain;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 
 
 @Data
+@AllArgsConstructor
 @Entity
 @Table(name = "authors")
 public class Author {
