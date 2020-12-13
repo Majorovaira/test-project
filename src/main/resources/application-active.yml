@@ -1,0 +1,17 @@
+spring:
+  datasource:
+#    PGDATABASE: "documentService"
+#    PGHOST : "localhost"
+#    PGPORT : 8080
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+    generate-ddl: true
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
