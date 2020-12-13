@@ -1,13 +1,6 @@
 spring:
   datasource:
-#    url: jdbc:postgres://localhost:8081/documentService
-#    PGDATABASE: "documentService"
-#    PGHOST : "localhost"
-#    PGPORT : 8080
-    url: jdbc:postgresql://localhost:8081/documentService
-    username: root
-    password: root
-    driver-class-name: org.postgresql.Driver
+
     initialization-mode: always
 
 
